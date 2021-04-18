@@ -71,7 +71,7 @@ const Register = (props) => {
                         </Form.Group>
 
                         <Button variant="primary" type="submit">
-                            Login
+                            Register
                         </Button>
                         <Form.Group id={"register"}>
                             <span>Already have an account?</span><span> <a href='/' >Login</a></span>

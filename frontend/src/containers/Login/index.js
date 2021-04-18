@@ -4,18 +4,21 @@ import './style.css';
 import {useDispatch} from "react-redux";
 import {login} from "../../actions/auth.actions";
 
+
+
 const Login = (props) => {
 
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const dispatch = useDispatch();
 
     const signin = (e) => {
         const data = {email, password}
         e.preventDefault();
         dispatch(login(data));
-
     }
+
+
     return (
         <>
            <Container>

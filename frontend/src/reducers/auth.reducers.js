@@ -52,9 +52,29 @@ export default (state = initState, action) => {
 
         case(authConstants.USER_LOGIN_FAILURE):
             state = {
+                ...initState,
+                loading: false,
+            }
+            break;
+
+        case(authConstants.USER_LOGOUT_REQUEST):
+            state = {
+                ...state,
+                loading: true,
+            }
+            break;
+
+        case(authConstants.USER_LOGOUT_SUCCESS):
+            state = {
+                ...initState,
+                loading: false,
+            }
+            break;
+
+        case(authConstants.USER_LOGOUT_FAILURE):
+            state = {
                 ...state,
                 loading: false,
-                error: action.error.error
             }
             break;
     }

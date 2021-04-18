@@ -13,13 +13,16 @@ export const signup = (data) => {
             dispatch({type: authConstants.USER_SIGNUP_SUCCESS});
             dispatch({type: authConstants.USER_LOGIN_SUCCESS, payload: {user, token}});
             localStorage.setItem('token', token);
-            localStorage.setItem('user', JSON.stringify(user))
+            localStorage.setItem('user', JSON.stringify(user));
+            window.location.href = "/home";
         }else{
             dispatch({type: authConstants.USER_SIGNUP_FAILURE, error: {error}});
         }
 
     }
 }
+
+
 export const login = (data) => {
     return async (dispatch) => {
         dispatch({type: authConstants.USER_LOGIN_REQUEST});
@@ -31,8 +34,38 @@ export const login = (data) => {
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user))
             dispatch({type: authConstants.USER_LOGIN_SUCCESS, payload: {user, token}});
+            window.location.href = "/home";
         } else {
-            dispatch({type: authConstants.USER_LOGIN_FAILURE, error: {error}});
+            dispatch({type: authConstants.USER_LOGIN_FAILURE, error: error});
         }
+    }
+}
+
+
+export const isUserLoggedIn = () => {
+    return async (dispatch) => {
+        const token = localStorage.getItem('token');
+        if(token){
+            const user = JSON.parse(localStorage.getItem('user'));
+            dispatch({
+                type: authConstants.USER_LOGIN_SUCCESS,
+                payload: {
+                    token, user
+                }
+            });
+        }else{
+            dispatch({
+                type: authConstants.USER_LOGIN_FAILURE,
+            });
+        }
+    }
+}
+
+
+export const logout = () => {
+    return async dispatch =>{
+        dispatch({ type: authConstants.USER_LOGOUT_REQUEST });
+        localStorage.clear();
+        dispatch({ type: authConstants.USER_LOGOUT_SUCCESS });
     }
 }

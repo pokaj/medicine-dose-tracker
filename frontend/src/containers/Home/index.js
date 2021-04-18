@@ -1,11 +1,26 @@
 import React, {useState} from 'react';
-import Header from "../../components";
-import {Card, Button, Container, Modal, InputGroup, Form} from "react-bootstrap";
+import Header from "../../components/Header";
+import {Button, Container, Modal, Form} from "react-bootstrap";
 import './style.css';
-import pill from '../../img/pill.png';
+import {useDispatch, useSelector} from "react-redux";
+import {add_medication} from "../../actions/medication.actions";
+import MedicationCard from "../../components/Card";
+
+
 
 const Home = () => {
+    const dispatch = useDispatch();
+    const medications = useSelector(state => state.medication.medications);
     const [lgShow, setLgShow] = useState(false);
+    const [name, setName] = useState('');
+    const [dosage, setDosage] = useState('');
+    const [frequency, setFrequency] = useState('');
+
+    const addMedication = () => {
+        const data = {name, dosage, frequency};
+        dispatch(add_medication(data));
+        setLgShow(false);
+    }
 
     return (
         <>
@@ -24,38 +39,34 @@ const Home = () => {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Medicine Name </Form.Label>
+                            <input type="email" placeholder="Medicine Name" className="form-control" value={name} onChange={(e)=>setName(e.target.value)} required/>
+                        </Form.Group>
 
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Medicine Name </Form.Label>
-                        <input type="email" placeholder="Medicine Name" className="form-control"/>
-                    </Form.Group>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Dosage </Form.Label>
+                            <input type="email" placeholder="Dosage" className="form-control" value={dosage} onChange={(e)=>setDosage(e.target.value)} required/>
+                        </Form.Group>
 
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Dosage </Form.Label>
-                        <input type="email" placeholder="Dosage" className="form-control"/>
-                    </Form.Group>
+                        <Form.Group controlId="formBasicEmail">
+                            <Form.Label>Frequency </Form.Label>
+                            <input type="email" placeholder="Amount" className="form-control" value={frequency} onChange={(e)=>setFrequency(e.target.value)} required/>
+                        </Form.Group>
 
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Label>Frequency </Form.Label>
-                        <input type="email" placeholder="Frequency in minutes" className="form-control"/>
-                    </Form.Group>
-
-                    <Button className="float-right">Add</Button>
+                        <Button className="float-right" onClick={addMedication}>Add</Button>
                 </Modal.Body>
             </Modal>
 
             <Container>
-                <Card style={{ width: '18rem' }} className={"card"}>
-                    <Card.Img variant="top" src={pill} />
-                    <Card.Body>
-                        <Card.Title>Card Title</Card.Title>
-                        <Card.Text>
-                            Some quick example text to build on the card title and make up the bulk of
-                            the card's content.
-                        </Card.Text>
-                        <Button variant="primary">Go somewhere</Button>
-                    </Card.Body>
-                </Card>
+                {
+                    medications?.map((item, index) => (
+                        <MedicationCard
+                            key={index}
+                            item={item}
+                        />
+                    ))
+                }
             </Container>
         </>
     )

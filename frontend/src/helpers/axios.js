@@ -19,20 +19,18 @@ axios_instance.interceptors.request.use((req) => {
     return req;
 });
 
-//
-// axios_instance.interceptors.response.use(
-//     (res) => {
-//         return res;
-//     },
-//     (error) => {
-//         console.log(error.response);
-//         const status = error.response ? error.response.status : 500;
-//         if (status && status === 401) {
-//             localStorage.clear();
-//             store.dispatch({ type: authConstants.LOGOUT_SUCCESS });
-//         }
-//         return Promise.reject(error);
-//     }
-// );
+axios_instance.interceptors.response.use(
+    (res) => {
+        return res;
+    },
+    (error) => {
+        const status = error.response ? error.response.status : 500;
+        if (status && status === 401) {
+            localStorage.clear();
+            store.dispatch({ type: authConstants.USER_LOGOUT_SUCCESS });
+        }
+        return Promise.reject(error);
+    }
+);
 
 export default axios_instance;
